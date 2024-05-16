@@ -194,13 +194,13 @@
   };
 
   const editUsuario = async (id) => {
-    const name = $("#nombreEdit").val();
+    const nombre = $("#nombreEdit").val();
     const balance = $("#balanceEdit").val();
     try {
       const { data } = await axios.put(
         `http://localhost:3000/usuario?id=${id}`,
         {
-          name,
+          nombre,
           balance,
         }
       );
@@ -218,6 +218,9 @@
     try {
       const response = await fetch("http://localhost:3000/usuario", {
         method: "post",
+        headers: {
+                "Content-Type": "application/json"
+            },
         body: JSON.stringify({
           nombre,
           balance,
@@ -235,7 +238,7 @@
     e.preventDefault();
     let emisor = $("form:last select:first").val();
     let receptor = $("form:last select:last").val();
-    let monto = $("#monto").val();
+    let monto = Number($("#monto").val());
     if (!monto || !emisor || !receptor) {
       alert("Debe seleccionar un emisor, receptor y monto a transferir");
       return false;
@@ -243,6 +246,9 @@
     try {
       const response = await fetch("http://localhost:3000/transferencia", {
         method: "post",
+        headers: {
+                "Content-Type": "application/json"
+            },
         body: JSON.stringify({
           emisor,
           receptor,

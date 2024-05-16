@@ -13,16 +13,26 @@ const pool = new Pool(config);
 const insertarUsuario = async (nombre, balance) => {
     const consult = {
         text: "insert into usuarios (nombre, balance) values ($1, $2);",
-        values: [nombre, balance]
+        values: [ nombre, balance ]
     };
 
     const result = await pool.query(consult);
-    return result;
+    return result.rows[0];
 };
 
 const obtenerUsuarios = async () => {
     const result = await pool.query("select * from usuarios;");
-    return result;
+    return result.rows;
+};
+
+const editarUsuario = async (id, nombre, balance) => {
+   const editar = {
+        text: `update usuarios set nombre = $1, balance = $2 where id = ${id} RETURNING *;`,
+        values: [ nombre, balance ]
+   }
+
+   const result = await pool.query(editar);
+   return result.rows;
 };
 
 const eliminarUsuario = async (id) => {
@@ -34,4 +44,4 @@ const eliminarUsuario = async (id) => {
     return result
 };
 
-module.exports = { insertarUsuario, obtenerUsuarios ,eliminarUsuario }
+module.exports = { insertarUsuario, obtenerUsuarios, editarUsuario ,eliminarUsuario }
