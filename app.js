@@ -23,6 +23,7 @@ app.post("/usuario", async (req, res) => {
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo insertar al usuario debido al error: ${code}`));
+        res.status(500).send("No ha sido posible agregar al usuario" + error);
     }
 });
 
@@ -33,6 +34,7 @@ app.get("/usuarios", async (req, res) => {
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo encontrar los usuarios debido al error: ${code}`));
+        res.status(500).send("No ha sido posible mostrar el registro de usuarios." + error);
     }
 });
 
@@ -46,6 +48,7 @@ app.put("/usuario", async (req, res) => {
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo editar al usuario debido al error: ${code}`));
+        res.status(500).send("No ha sido posible editar al usuario" + error);
     }
 });
 
@@ -57,6 +60,7 @@ app.delete("/usuario", async (req, res) => {
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo eliminar el usuario debido al error: ${code}`));
+        res.status(500).send("No ha sido posible eliminar al usuario" + error);
     }
 });
 
@@ -64,11 +68,12 @@ app.post("/transferencia", async (req, res) => {
     try {
         const { emisor, receptor, monto } = req.body;
 
-        const result = await nuevaTransferencia(emisor, receptor, (monto));
-        res.json(result)
+        const result = await nuevaTransferencia(emisor, receptor, monto);
+        res.send(result)
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo realizar la transferencia debido al error: ${code}`));
+        res.status(500).send("No ha sido posible realizar la transferencia" + error);
     }
 });
 
@@ -79,5 +84,6 @@ app.get("/transferencias", async (req, res) => {
     } catch (error) {
         const { code } = error;
         console.log(chalk.redBright.bold(`No se pudo encontrar el registro de transferencias debido al error: ${code}`));
+        res.status(500).send("No ha sido posible mostrar el registro de transferencias" + error);
     }
 });
