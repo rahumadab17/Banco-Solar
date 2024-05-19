@@ -10,6 +10,14 @@ const config = {
 
 const pool = new Pool(config);
 
+//*INTENTO MENSAJE BALANCE INSUFICIENTE
+
+/* const balanceEmisorCheck = async (emisor) => {
+    const checkBalanceEmisor = await pool.query(`select * from usuarios where nombre = '${emisor}'`);
+    const resultCheckBalance = checkBalanceEmisor.rows[0].balance
+    return resultCheckBalance
+} */
+
 const nuevaTransferencia = async (emisor, receptor, monto) => {
     const client = await pool.connect();
 
@@ -54,7 +62,7 @@ const nuevaTransferencia = async (emisor, receptor, monto) => {
         console.log(`No ha sido posible hacer la transacción debido al código de error: ${code}`);
     } finally {
         client.release();
-    }
+    };
 };
 
 const obtenerTransferencias = async () => {
@@ -62,17 +70,4 @@ const obtenerTransferencias = async () => {
     return result.rows;
 };
 
-module.exports = { nuevaTransferencia, obtenerTransferencias }
-
-/*         const sustraccionEmisorQuery = "update usuarios set balance = balance - $2 where id = $1 RETURNING *;"
-        const sustraccionValues = [ emisor, monto ];
-
-        const adicionReceptorQuery = "update usuarios set balance = balance + $2 where id = $1 RETURNING *;"
-        const adicionValues = [ receptor, monto ];
-
-        const registroTransferencia = "insert into transferencias (emisor, receptor, monto) values ($1, $2, $3);"
-        const registroValues = [ emisor, receptor, monto ]
-
-        await client.query(sustraccionEmisorQuery, sustraccionValues);
-        await client.query(adicionReceptorQuery, adicionValues);
-        await client.query(registroTransferencia, registroValues); */
+module.exports = { nuevaTransferencia, obtenerTransferencias, balanceEmisorCheck}
